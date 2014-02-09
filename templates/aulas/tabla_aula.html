@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %} Horario de {{ aula.nombre_corto }} {% endblock %}
+
+{% block extra_headers %}
+	{{ super }}
+	<!-- YUI_include tabview -->
+{% endblock %}
+
+
+{% block content %}
+
+<div class="yui-navset" id="tabs_horario">
+	
+	<ul class="yui-nav">
+		<li class="selcted"><a><em>Horario</em></a></li>
+		<li><a><em>Aula por semana</em></a></li>
+	</ul>
+	
+	<div class="yui-content">
+		<div>
+			{% include "aulas/listado_horario_aula.html" %}
+		</div>
+		<div>En contrucción</div>
+	</div>
+</div> <!--  Fin tabla -->
+
+<script type="text/javascript">
+	(function () {
+		var tab_horario = new YAHOO.widget.TabView("tabs_horario"); 
+		tab_horario.set('activeIndex', 0);
+
+		var sel_aula = document.getElementById('satlo_de_aula');
+		YAHOO.util.Event.addListener(sel_aula, 'change', function (){
+            document.location = "../"+sel_aula.value+"/";
+        });
+    	horarios = {};
+		$$('.simple, .superpuesto').each(function (e){
+			try {
+				var clase = e.getAttribute('class').split(' ')[1];
+				
+				if (typeof(horarios[clase]) == 'undefined') {
+					horarios[clase] = [e];
+				} else {
+					horarios[clase][horarios[clase].length] = e;
+				}
+			} catch(ex) {
+				console.log(ex);
+			}
+		});
+		$H( horarios ).each(function (par) {
+			console.log(par.key, ' ', par.value);
+			var celdas = par.value;
+			celdas[0].setAttribute('rowspan', par.value.length);
+			$A(celdas.slice(1)).each(function (celda){
+				celda.style.display = 'none';
+				//celda.parent.removeChild(celda);
+			});
+			 
+		});
+		console.log(horarios);
+			
+    	
+	})();
+	
+</script>
+{% endblock %}

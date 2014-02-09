@@ -1,0 +1,23 @@
+/*
+ Estilo para el listado de aulas
+*/
+
+.listado_aulas .aula_hora {
+	width: 16px;
+	height: 16px;
+	background: #fAfAfA;
+}
+
+.listado_aulas th {
+	font-size: 9px;
+}
+
+.tip-message {
+	display: none;
+}
+.loading {
+	background-image: url('../../img/ajax-loader.gif');
+	background-repeat: no-repeat;
+	padding-left: 20px;
+	
+}

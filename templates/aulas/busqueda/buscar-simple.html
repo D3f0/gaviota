@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %} Búsqueda {% endblock %}
+
+{% block extra_headers %}
+	{{ super }}
+	<!-- YUI_include tabview -->
+			
+	<link type="tex/css" rel="stylesheet" href="{{ MEDIA_URL }}css/forms.css"/>
+	{#% load head_tags %#}
+	{#% css_inclusion "{{MEDIA_URL}}js/prototype.js" %#}
+	
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/prototype.js"></script>
+	
+{% endblock %}
+
+{% load aulas %}
+{% block content %}
+	
+	<h3>Búsqueda</h3>
+	<div>
+		<p>Ingrese nombre de la materia o profesor</p>
+		<form action="" method="POST" class='formulario'>
+			<table>
+				<!--  Form -->
+				{{ form }}
+				<!-- end form -->
+			<tr colspan='2'>
+				<input type="submit" text="enviar">
+			
+			</tr>
+			</table>
+		</form>
+	
+	</div>
+
+	{% comment %}
+	<h3>Búsqueda de aulas</h3>
+	
+	<p>Mediante el siguiente formulario puede realizar consultas
+	sobre cursos y/o eventos: </p>
+	
+	<div id="buscador" class="yui-navset">
+		<ul class="yui-nav"> 
+	        <li class="selected"><a href="#tab1"><em>Búsqueda por nombre</em></a></li> 
+			<li><a href="#tab2"><em>Búsqueda avanzada</em></a></li> 
+			<li><a href="#tab3"><em>Búsqueda por fecha y hora</em></a></li>
+	    </ul>
+	    <div class="yui-content">
+	    	<div>
+	    		<h3>Ingrese nombre o parte del nombre</h3>
+	    		
+	    	
+	    	</div>
+			<div id="tab2"> 
+				<form action="" method="POST">
+					<table width="100%" border="0px;" class="search_table">
+					{{ form }}	
+					<tr class="buttons_row">
+						<td colspan="2">
+							<input type="submit" value="Buscar" id="btn_buscar">
+							<input type="reset"  value="Limpiar" id="btn_limpiar">
+						</td>
+					</tr>
+					</table>
+				</form>
+			</div>
+			<div id="tab3" id="tab3">Beta</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		YAHOO.util.Event.onDOMReady(function(){
+
+			var btn = new YAHOO.widget.Button("btn_buscar");
+			var btn = new YAHOO.widget.Button("btn_limpiar");
+			
+			var buscador_tabs = new YAHOO.widget.TabView("buscador"); 
+			
+			var tabla = $$('.search_table').first();
+			// Borrar
+			$(tabla).select('.borrable').each(function (borrable) {
+				var elemento = document.createElement('a');
+				elemento.innerHTML="Limpiar";
+				elemento.className = 'borrar';
+				elemento.href="#";
+				borrable.parentNode.appendChild(elemento);
+				Event.observe(elemento, 'click', function (e) {
+					Event.stop(e);
+					borrable.value = '';
+					borrable.focus();
+				});
+			});
+			// Horario
+			$(tabla).select('.horario').each(function (horario){
+				var elemento = document.createElement('a');
+				elemento.innerHTML = 'Ahora';
+				elemento.href = '#';
+				elemento.className = 'horario';
+				
+				horario.parentNode.appendChild(elemento);
+				Event.observe(elemento, 'click', function (e){
+					Event.stop(e);
+					var d = new Date();
+					try {
+					horario.value = d.getHours() + ':' + d.getMinutes();
+					} catch (e) {
+						console.log(e);
+					}					
+				}); 
+			});		
+		});
+	</script>
+	{% endcomment %}
+{% endblock %}

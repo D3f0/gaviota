@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+	<h2>Listado de {{ edificio }}</h2>
+	{% if aulas_edificio %}
+		<ul>
+		{% for aula in edificio.aula_set.all %}
+			<li><a href="{{ aula.get_absolute_url }}">{{ aula.nombre_corto }}</a>&nbsp;&nbsp;({{ aula.capacidad|default_if_none:"desconocida"}})</li>	
+		
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>Sin aulas</p>
+	{% endif %}
+
+{% endblock %}

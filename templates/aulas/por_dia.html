@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+
+{% block title %} Horarios del día {{ dia }} {% endblock %}
+{% block content %}
+<h2>Horarios para el {{dia}}</h2>
+
+<div style="border: 1px solid #222; padding: 3px; margin-bottom: 4px; background: #f3f4f5;">
+	Saltar a
+	<select id="salto_dia">
+		{% for n, dia in DIAS_SEMANA %}
+			<option value="{{ n }}" {% ifequal n n_dia%} selected="selected" {% endifequal %}>{{ dia }}</option>
+		{% endfor %}
+	</select>
+</div>
+
+<script>
+(function (){
+	var el = document.getElementById('salto_dia');
+	if (el) {
+		YAHOO.util.Event.addListener(el, 'change', function (){
+            document.location = "../"+el.value+"/";
+        });
+	}
+})();
+</script>
+<div style="width: 100%; overflow-y:hidden;overflow-x:auto;">
+{% load aulas %}
+<table style="border: 2px solid #222;">
+<tbody>
+	<tr>
+	<th></th>
+	{% for aula in aulas %}
+	<th>
+			{{ aula.nombre_corto }}<br/>
+			<i>(Cap. {{ aula.capacidad|default_if_none:"N/D" }})</i>
+	</th>
+	{% endfor %}
+	
+	</tr>
+	{% for hora in HORAS %}
+	<tr>
+		<td style="width:15px;">
+			{{ hora }}
+		</td>
+		{% for aula in aulas %}
+			
+			{% dibujar_celda_horario_de aula n_dia hora %}
+			
+		{% endfor %}
+	</tr>
+	{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}

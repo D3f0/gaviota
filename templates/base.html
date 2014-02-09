@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us" >
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favico.ico" type="image/x-icon" />
+        {% block head %}
+        <title>{% if title %} {{ title }} {% else %} {% block title %} Gaviota SIU {% endblock %} {% endif %}</title>
+        {% block base_style %}
+		
+		{% endblock %}
+		
+		<!-- YUI_init -->
+		<!-- YUI_version raw -->
+		
+		<!-- YUI_include element selector reset fonts base calendar connection button json menu -->
+		
+		<link rel="stylesheet" media="screen" type="text/css" href="{{ MEDIA_URL }}css/base.css"></link>
+        {% block extra_headers %}
+            {# Contenido #}
+        {% endblock %}
+        {# Si no se encuentra firebug instalado en el cliente, no fallar... #}
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/firebugx.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/prototype.js"></script>
+        {% endblock %}
+    </head>
+    
+    <body class="yui-skin-sam">
+    <div class="wrapper">
+    
+    	<div id="top_logo">
+    	<!-- Header -->
+    	
+    	</div>
+    	<div class="userdate_info">
+    	
+    	<div class="login_data">
+    	{% if user.is_authenticated %}
+    		Bienvendio/a {{ user }} |
+    		<a href="/logout/">Cerrar sesión</a>
+    	{% else %}
+    		<a href="/login/">Iniciar sesión</a>
+    	{% endif %} 
+    	
+    	</div>
+    	
+    	<div class="extra">
+    	Sistema de administración de aulas.
+    	</div>
+    	
+    	</div>
+		<div id="mainmenu" class="yuimenubar yuimenubarnav"></div>
+		    	
+    	<div id="contents">
+	    {% block content %}
+			<!-- Content -->
+	    {% endblock %}
+	    </div>
+	    
+	    <div id="footer">
+	    	<p style="padding: 4px; text-align: right;">
+
+		    	<img src="{{ MEDIA_URL}}img/logos/python-logo-inkscape_small.png">
+		    	<img src="{{ MEDIA_URL}}img/logos/djangopowered_small.gif">
+	    	</p>
+	    	
+    	</div>
+    </body>
+    <script type="text/javascript">
+    YAHOO.util.Event.onDOMReady(function () {
+        
+        /*
+             Instantiate a Menu.  The first argument passed to the 
+             constructor is the id of the DOM element to be created for the 
+             Menu instance.
+        */
+        
+        var oMenu = new YAHOO.widget.MenuBar("mainmenu");
+        
+
+        /*
+            Add items to the Menu instance by passing an array of object literals 
+            (each of which represents a set of YAHOO.widget.MenuItem 
+            configuration properties) to the "addItems" method.
+        */
+        
+        oMenu.addItems([
+						{text: 'Inicio',
+							url: '/aulas/'
+						},
+
+						{# Asignaturas #}
+                        
+                        {% if carreras %}
+                        {
+                            text: "Carreras",
+                            id: "horario_por_facultad",
+                            submenu: {
+                            	id: "carreras_submenu",
+                                itemdata: [
+                                {% for c in carreras %}
+                                	{ text: '{{ c }}', url: '/aulas/horario_carrera/{{ c.id }}/' }
+                                	{% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                                ]
+                        	}
+                        },   
+                        {% endif %}
+
+
+						
+	                	{ text: 'Aulas',
+	                        submenu: {  
+	                            id: "submenu1",  
+	                            itemdata: [
+
+	                                {% block yui_menu_aulas %}
+										                                
+	                                { text: "Horarios por Aula", id: "tabla_horarios_menu",
+	                                	submenu: {
+	                                	id: "tabla_horarios_items",
+	                                	itemdata: [
+	                                			{% for edificio in edificios %}
+	                                				{
+		                                				text:'{{ edificio }}', 
+														url: '/aulas/edificio/{{ edificio.id }}/',
+			                                			submenu: {
+		                                						id: 'edificio_{{edificio.id}}',
+		                                						itemdata: [
+		                                							{% for aula in edificio.aulas_en_orden.all %}
+		                                								{% spaceless %}
+		                                								{'text': "{{aula.nombre_corto}}",
+		                                								 'url': "{{aula.get_absolute_url}}"
+		                                								 }
+		                                								{% endspaceless %}
+		                                								{% if not forloop.last %},{% endif %}
+		                                							{% endfor %}
+		                                							]
+		                                						}
+	                                				}
+	                                				{% if not forloop.last %},{% endif %}
+	                                			{% endfor %}
+	                                			
+	                                		] // Itemdata
+	                                	} // submenu
+	                                },
+	                                {% endblock %}
+
+	                                
+
+	                                {% if DIAS_SEMANA %}
+									,{
+									    text: "Horarios por día",
+		                                id: "horario_por_dia",
+		                                submenu: {
+		                                	id: "dias_submenu",
+			                                itemdata: [
+			                                {% for n, dia in DIAS_SEMANA %}
+			                                	{ text: '{{ dia }}', url: '/aulas/horario_por_dia/{{ n }}/' }
+			                                	{% if not forloop.last %},{% endif %}
+			                                {% endfor %}
+			                                ]
+	                                	}
+									},
+	                                {% endif %}
+		                            
+		                            
+	                            ]  
+	                        }
+	                	},
+	                	{text: 'Búsqueda',
+		                	
+		                	submenu: {
+			                	id: 'tipos_busqueda',
+			                	itemdata: [
+			                	           {text: 'Simple', url: '/aulas/buscar-simple/' }, 
+			                	           {text: 'Avanzada', url: '/aulas/buscar-avanzado/'},
+			                	           {text: 'Por fecha', url: 'aulas/buscar-fechas/'}
+						        ]
+
+	                		}
+		                },
+		                {% if user.is_authenticated and user.is_staff %}
+		                {text: 'Adminsitración',
+							submenu: {
+							id: 'submenu_admin_admin',
+							itemdata:[
+					                	{text: "Administración", //url: "/admin/", 
+											id: "admin_menu",
+												submenu: {
+				                        	 		id: "adminsubmenu1",
+				                        	 		itemdata: [
+				                        	 		           {text:'Altas, baja y modificaciones de datos', url: '/aulas/admin/'},
+				                        	 		           {% if user.is_superuser %}
+				                        	 		           {text:'Ir a la administración del superusuario', url: '/admin/'}
+				                        	 		           {% endif %}
+				   		                            ]
+												}
+				                        }
+					                	,{
+											text: 'Estadísitcas',
+											id: 'estadisticas_submenu',
+											submenu: {
+												id: 'estadisticas_submenu_1',
+												itemdata: [
+													{text: 'Utilización de aulas por facultad', url: '/aulas/estadisticas/utilizacion/'}
+												]
+											}
+										}
+					                	,{
+											text: "Superposiciones",
+											url: "/aulas/superposiciones/",
+										},{
+											text: "Horarios sin asignar",
+											url: "/aulas/sin_asignar/",
+										}
+
+
+							]
+
+							}
+
+			             }
+                        {% endif %}
+                        
+		                
+	                	,{ text: 'Ayuda',
+                        submenu: {  
+                            id: "submenu2",  
+                            itemdata: [ 
+                                { text: "Sobre el sistema de administración de aulas", url: "/aulas/ayuda/" }, 
+                            ]  
+                        } 
+            }
+            ]);
+        
+
+        /*
+             Since this Menu instance is built completely from script, call the 
+             "render" method passing in the DOM element that it should be 
+             appended to.
+        */
+        
+        oMenu.render();
+    });
+        
+    </script>
+    {% block bottom %} {% endblock %}
+</html>

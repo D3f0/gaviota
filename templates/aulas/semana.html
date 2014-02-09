@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+
+{% comment %}
+-----------------------------------------------------------------------------
+Listado semanal de aulas.
+
+-----------------------------------------------------------------------------
+{% endcomment %}
+
+{% block extra_headers %}
+	{{ super }}
+	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/listado_aulas.css"></link>
+{% endblock %}
+
+{% block content %}
+
+{% load aulas %}
+
+<h2>Listado semanal de asignación de Aulas</h2>
+
+
+{# <strong>Semana: Del {{ fecha1|date:"d/m/Y" }} al {{ fecha2|date:"d/m/Y" }} </strong> #}
+
+{% generar_html_tabla_aulas fecha horario %}
+
+<script type="text/javascript" src="{{ MEDIA_URL }}js/prototype.js"></script>
+<script type="text/javascript" src="{{ MEDIA_URL }}js/aulas/aulas.js"></script>
+{% endblock %}

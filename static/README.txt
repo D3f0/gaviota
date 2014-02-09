@@ -1,0 +1,1 @@
+Medios estáticos: Imágenes, Javascript, Css, Flash, etc.

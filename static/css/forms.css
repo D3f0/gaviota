@@ -1,0 +1,73 @@
+.formulario label.outer {
+    width: 8em;
+    display: block;
+    float: left;
+    font-weight: bolder;
+} .formulario input[type = text] {
+    border: 1px solid #ccc;
+    padding: 2px;
+} .formulario ul {
+    float: left;
+    left: 9em;
+} .form_label_td {
+    font-weight: bolder;
+    width: 9em;
+}
+
+/* Nuevo CSS */ .search_table {
+    border: 0px;
+    maring: 4px;
+    border: 1px solid #777;
+} .search_table td, .search_table th {
+    border: 0px;
+} .search_table .buttons_row {
+    background: #AAC3D0;
+} .search_table .help_text {
+    display: block;
+} .search_table ul li {
+    min-width: 80px;
+    float: left;
+    list-style: none;
+} .searc_table ul {
+    margin: 0px;
+    padding: 0px;
+} .searc_table .error_list * {
+    background: red;
+} .search_table .row2 {
+    background-color: #fff;
+} .search_table p.error {
+    background: red;
+    padding: 2px;
+    color: white;
+    font-weight: bolder;
+} .search_table A.horario, .search_table A.borrar {
+    text-decoration: none;
+    padding-left: 20px;
+    background-repeat: no-repeat;
+    margin-left: 4px;
+} .search_table A.horario {
+    background-image: url('{{ MEDIA_URL }}img/icons/clock_go.png');
+} .search_table A.borrar {
+    background-image: url('{{ MEDIA_URL }}img/icons/cancel.png');
+} .search_table input[type = text] {
+    border: 1px solid #ccc;
+    border-right-color: #222;
+    border-bottom-color: #222;
+    padding: 2px;
+} .detalles, .horario {
+    width: 80%;
+} .search_table li input[type=checkbox] {
+    margin-left: 10px;
+} .errorlist {
+    float: right;
+    /*display: box;*/
+} .errorlist li {
+    padding: 4px;
+    background: red;
+    color: white;
+    padding-left: 23px;
+}
+
+form table tr {
+    border-bottom: 1px dashed #777;
+}

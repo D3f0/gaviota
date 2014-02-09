@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %} Superposiciones de horario {% endblock %}
+
+
+{% block content %}
+
+<h3>Superposiciones</h3>
+	<div sytle="margin-bottom: 14px;">
+		<ul>
+		{% for aula, superposiciones in superpos_aula.items %}
+			<li>
+				<a href="#aula_{{ aula.id}}" style="">
+					{{ aula.nombre_corto }} con {{ superposiciones|length }} superposicion(es)
+				</a>
+			</li>
+		{% endfor %}
+		</ul>
+	</div>
+	{% for aula, superposiciones in superpos_aula.items %}
+		<div style="background: #dea; border: 1px solid #666; padding: 4px;">
+		
+		<a name="aula_{{aula.id}}"><h4>{{ aula }}</h4></a>
+		<a href="{{ aula.get_absolute_url }}" target="_blank">Ir al aula &raquo;</a>
+		
+		</div>
+		<p>
+			{% for horarios in superposiciones %}
+				<table style="width: 100%;">
+					<tbody>
+					<tr>
+						<th style="width:50%;">Asignatura</th><th>Dia</th><th>Desde</th><th>Hasta</th>
+						<th>Alumnos</th><th>Carrera</th>
+					</tr>
+					
+					{% for h in horarios %}
+					<tr>
+						<td>{{ h.asignatura.nombre }}
+						{% if user.is_authenticated  and user.is_staff %}
+							<a href="/aulas/admin/aulas/asignatura/{{ h.asignatura.id }}/" title="Una vez corregida, persione F5 o Acutalizar para refrescar este listado y comprobar que la superposición ha sido corregida">
+							Editar
+							</a>						
+						{% endif %}
+						</td>
+						<td>{{ h.weekday_name }}</td>
+						<td>{{ h.hora_inicio|time:"H:i" }}</td>
+						<td>{{ h.hora_fin|time:"H:i" }}</td>
+						<td>{{ h.asignatura.cant_alumnos|default_if_none:"No ingresada" }}</td>
+						<td>{{ h.asignatura.carreras }}</td>
+					</tr>
+					{% endfor %}
+					
+					</tbody>
+				</table>
+			{% endfor %}
+		</p>
+	{% endfor %}
+
+{% endblock %}

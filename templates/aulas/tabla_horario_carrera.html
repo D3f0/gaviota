@@ -1,0 +1,47 @@
+{% load aulas %}
+<table style="width: 100%;">
+
+	<tr>
+		<th colspan="9" style="background-color: #{{ carrera.facultad.color }};">
+		<h4>Horarios de la cerrera &laquo;{{ carrera }}&raquo; </h4>
+		</th>
+	</tr>
+
+	<tr>
+	<th>Cuat.</th>
+	<th>Aignatura</th>
+	<th>Profesor(es)</th>
+
+	{% for n, dia in DIAS_SEMANA %}
+		<th>{{ dia }}</th>
+	{% endfor %}
+	</tr>
+	{% for anio, asignaturas_anio in asignaturas.items %}
+	<tr>
+		<th colspan="9" style="border: double #000;">{{ anio }}° Año </th>	
+	</tr>
+		{% for asig in asignaturas_anio %}
+		<tr>
+		<td>{{ asig.cuatri_corto }}</td>
+		<td><b>{{ asig.nombre }}</b>
+		{% if not excel and user.is_authenticated  and user.is_staff %}
+			<a href="/aulas/admin/aulas/asignatura/{{ asig.id }}/" title="Editar">
+			Editar
+			</a>
+			{% if asig.depende_de %}
+				<br />
+				<b><i>({{ asig.depende_de }})</i></b>
+			{% endif %} 
+		{% endif %}
+		
+		
+		
+		</td>
+		<td>{{ asig.personas_que_la_dictan }}</td>
+			{% for n_dia, dia in DIAS_SEMANA %}
+				<td>{% horario_del_dia asig n_dia %}</td>
+			{% endfor %}
+		{% endfor %}
+		</tr>
+	{% endfor %}
+</table>

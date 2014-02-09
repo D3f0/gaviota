@@ -1,0 +1,81 @@
+BODY .yui-skin-sam {
+	font-family: "Verdana", "Thaoma";
+	background: url('../img/back.png') top left repeat-x repeat-y #dec;
+	font-size: 13px;
+}
+
+#top_logo {
+	height: 80px;	
+	width: 798px;
+	background-image: url("../img/top_logo.png");
+	background-color: transparent;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+
+
+.wrapper {
+	margin-left: auto;
+	margin-right: auto;
+	width: 800px;
+	/*padding-left: 10px;
+	padding-right: 10px;*/
+}
+
+#contents {
+	padding: 4px;
+	
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+		
+}
+
+#footer {
+	/*background: url(../img/footer_background.png) bottom left #fff no-repeat;*/
+	background: #C5DEEE;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-left: 1px solid #ccc;
+	border-top: 1px solid #ccc;
+	border-bottom: 5px solid #347EAF;
+	height: 120px;
+	
+}
+
+A.simple {
+	text-decoration: none;
+
+}
+
+A.rollback_hide {
+	padding-left: 16px;
+	
+	background-image: url(../img/rollback_link.png);
+	background-position: top left;
+}
+
+A.rollback_show {
+	padding-left: 16px;
+	background-image: url(../img/rollback_link.png);
+	background-position: top left;
+}
+
+.yui-skin-sam .userdate_info {
+	background: #C5DEEE;
+	border-top: 1px solid #888;
+	padding: 3px;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+}
+
+.yui-skin-sam .userdate_info .login_data {
+	text-align: right;
+	/*width: 150px;*/
+	float: right;
+}
+
+.yui-skin-sam .userdate_info .extra {
+	font-weight: bolder;
+	color: #777;
+	font-style: italic;
+}

@@ -1,0 +1,9 @@
+#header {
+	background: #347EAF;
+	
+}
+/* Links en los errorlist */
+.errorlist A {
+	color: #FFEF41;
+	font-weight: bolder;
+}

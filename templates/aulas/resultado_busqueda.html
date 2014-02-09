@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %} Resultado de la búsqueda {% endblock %}
+
+{% block extra_headers %}
+	{{ super }}
+	<style type="text/css">
+		#results {
+			width: 100%;
+			margin-top: 4px;
+		}
+		#results .title {
+			width: 20%;
+			text-align: left;
+		}
+		td.title {
+			text-align: center;
+			font-size: 13px;
+			font-variant: small-caps;
+		}
+	</style>
+{% endblock %}
+
+{% block content %}
+<!-- <a href="/aulas/buscar/">Volver a buscar</a> -->
+<span id="search_again"></span>
+<script type="text/javascript" id="search_again">
+	(function () {
+		var btn = new YAHOO.widget.Button({
+			id: "search_again",
+			type: "link",
+			label: "Volver a buscar"
+		});
+	})();
+</script>
+<div style='height: 24px;'>
+<div style='float: left; font-weight: bolder;'>Estos son los resultados de su búsqueda:</div> 
+
+<div style='float: right;'><a href="/aulas/buscar/">¿Buscar de nuevo?</a></div>
+</div>
+
+
+
+{% if resultado %}
+	{% for c_evento in resultado %}
+		<div sytle="border: 1px solid #000; padding: 2px; height: 230px; float: left;">
+			<table style="width: 100%;">
+			<tr>
+			<td class='title' colspan="{{ c_evento.horario_set.count }}">
+			<b>{{ c_evento }}</b>
+			<i>{{ c_evento.carrera.all|join:"; " }}</i>
+				{% if c_evento.anio %}
+				({{ c_evento.anio }}° Año {{ c_evento.nombre_cuatrimestre }})
+				{% endif %}
+			</td>
+			</tr>
+			<tr>
+			{% for horario in c_evento.horario_set.all %}
+							<td>							
+							<b>{{ horario.weekday_name }}</b><br/>
+							<b> {{ horario.aula|default_if_none:"Sin asignar" }}: </b>
+							{{ horario.hora_inicio|time:"H:i" }} - 
+							{{ horario.hora_fin|time:"H:i" }}
+							</td>
+			{% endfor %}
+			</tr>
+			<tr >
+			<td colspan="{{ c_evento.horario_set.count }}">
+				A cargo de:	<b><i>{{ c_evento.persona.all|join:" - " }}</i></b>
+			</td>
+			</tr>
+			</table>
+		</div>
+	
+	{% endfor %}
+{% else %}
+	Sin resultados.
+{% endif %}
+
+
+<script type="text/javascript">
+	(function(){
+		$$('A.simple').each(function (a) {
+			Event.observe(a, 'click', function (e){
+				Event.stop(e);
+				var clase = a.readAttribute('mostrar');
+				var elem = $(a.parentNode).select('.' + clase).first();
+				if ($(elem).visible()){
+					$(elem).hide();
+					$(a).innerHTML = $(a).innerHTML.replace(/Ocultar/, 'Ver'); 
+				}
+				else {
+					$(elem).show();
+					$(a).innerHTML = $(a).innerHTML.replace(/Ver/, 'Ocultar');
+				}
+			});
+		});
+	})();
+</script>
+{% endblock %}

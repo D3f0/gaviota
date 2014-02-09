@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %} Estadísticas de uso de aulas {% endblock %}
+
+{% block content %}
+	<h2>Estadísitca de uso de aulas</h2>
+	
+	<form action="" method="POST">
+		<table style="width: 100%;">
+		<tbody style="border: 1px solid #777;">
+			{{ form.as_table }}
+			<tr>
+				<td colspan="2" style="text-align: right;">
+				<input value="Calcular" name="Calcular" type="submit">
+				<input value="Limpiar" name="Enviar" type="reset">
+				</td>
+			</tr>
+		</tbody>
+		</table>
+	</form>
+	{% if resultado %}
+		<table>
+			<tbody>
+			
+			<tr>
+			<th></th>
+			{% for titulo in titulos %}
+				<th>
+				{{ titulo }}
+				</th>
+			{% endfor %}
+			</tr>
+			{% for facultad,  valores in resultado.items %}
+				<tr>
+					
+				<th style="text-align: left;">{{ facultad }} </th>
+				{% for v in valores %}
+					<td>{{v}}</td>
+				{% endfor %}
+				</tr>
+			{% endfor %}
+			
+			</tbody>
+		</table>
+	{% endif %}	
+
+
+{% endblock %}

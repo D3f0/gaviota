@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %} Inicio {% endblock %}
+
+{% block extra_headers %}
+	{{ super }}
+	
+	<style type="text/css">
+		#transitorios {
+			border: 1px solid #ace;
+			/*min-height: 40px;*/
+			background: #bdf;
+			padding: 6px;
+		}
+			
+		.listado_aula {
+			padding: 5px;
+			padding-left: 12px;
+			margin: 2px;
+			border: 1px dashed #CCC;
+		}
+		
+		.listado_aula:hover {
+			border: 1px solid #222;
+			/*background-color: #FBFFAD;*/
+		}
+		
+		.uno {
+			background-color: #ADD3FF;
+		
+		}
+		
+		.dos {
+			/*background-color: #DEA;*/
+			border: 1px dashed #999;
+		
+		}
+	</style>
+{% endblock %}
+
+
+{% block content %}
+<!-- h2>Inicio</h2 -->
+<h3>Horarios transitorios para {{ hoy|date:"j/M/Y" }}:</h3>
+<div id="transitorios">
+	{% if horarios_transitorios %}
+	
+	{% else %}
+		<p>No existen horarios transitorios para la fecha.</p>
+	{% endif %}
+</div>
+<h3>Listado de aulas</h3>
+
+	{% for edificio in edificios %}
+		
+		<h4>{{ edificio }}</h4>
+		{% for aula in edificio.aula_set.all %}
+			<div class="listado_aula {% cycle 'uno' 'dos' %}">
+				<h5>{{ aula.nombre_corto }}</h5>
+				Capaciadd: {{ aula.capacidad|default_if_none:"Desconocida" }}.
+				<b>
+				<a href="{{ aula.get_absolute_url }}">Ver &raquo;</a>
+				<a href="{{ aula.get_absolute_url }}excel/">Excel</a>
+				</b>
+			</div>
+		{% endfor %}
+	{% endfor %}
+
+
+<script type="text/javascript">
+	/*
+	(function (){
+		var btn = new YAHOO.widget.Button('btn_buscar_aulas');
+		var btn = new YAHOO.widget.Button('btn_listado_aulas');
+
+	})(); */
+</script>
+{% endblock %}

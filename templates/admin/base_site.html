@@ -1,0 +1,17 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}{{ title }} | Administración de sistema de aulas {% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{#% trans 'Django administration' %#}
+Gaviota SIU
+</h1>
+<p style="font-style: italic; margin-left: 10px;">Sistema de administración de aulas
+<a href="/" style="font-weight: bolder; background: url({{ MEDIA_URL }}img/icons/arrow_up.png) left center no-repeat;
+padding-left: 16px;">
+Volver a la portada</a>
+</p>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

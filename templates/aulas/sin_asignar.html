@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %} Horarios sin asignar {% endblock %}
+
+
+{% block content %}
+<h2>Aulas sin asignar</h2>
+
+{% for facultad, horarios_sin_asignar in horarios.iteritems %}
+	<h3>{{ facultad }}</h3>
+	<table style="width: 100%">
+	<tr style="background: #{{ facultad.color }};">
+		<th>Nombre</th>
+		<th>Día</th>
+		<th>Docente</th>
+		<th>Inicio</th>
+		<th>Fin</th>
+		<th>Cantidad de alumnos</th>
+	</tr>
+	{% for horario in horarios_sin_asignar %}
+	<tr>
+		<td>{{ horario.asignatura.nombre }}
+			<a href="/aulas/admin/aulas/asignatura/{{ horario.asignatura.id }}">Editar</a>
+		
+		</td>
+		<td>{{ horario.weekday_name }}</td>
+		<td>{{ horario.asignatura.persona.all|join:", " }}</td>
+		<td>{{ horario.hora_inicio }}</td>
+		<td>{{ horario.hora_fin }}</td>
+		<td>{{ horario.asignatura.cant_alumnos|default_if_none:"No ingresada" }}</td>
+	</tr>
+	{% endfor %}
+	</table>
+	<p><b>Cantidad:</b>&nbsp;&nbsp;{{ horarios_sin_asignar|length }}.</p>
+{% endfor %}
+ 
+{% endblock %}

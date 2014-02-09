@@ -1,0 +1,69 @@
+			{% load aulas %}
+			<table style="width: 100%; background-color: #FFF;">
+				<tbody>
+					<tr>
+						
+						{# <th colspan='{{ DIAS_SEMANA|length }}'> #}
+						<th colspan='7'>
+										Horario del aula {{ aula.nombre_corto }} (Capaicdad: {{ aula.capacidad|default_if_none:"desconocida" }})		
+						</th>
+					</tr>
+					{# Título de días #}
+					<tr><th style="text-align: center; width: 20px;">&nbsp;</th>
+					{% for numero, nombre_dia in DIAS_SEMANA %}
+						<th style="width: 100px;;">
+						{{ nombre_dia }}
+						</th>
+					{% endfor %}
+					</tr>
+					
+					{% for hora in HORAS %}
+					<tr style="background: {% cycle #CFE4F0,#fff %}">
+						<th>
+							<a name="{{ hora }}">
+							{{ hora }}
+							</a>
+						</th>
+						{% for numero_dia,nombre_dia in DIAS_SEMANA %}
+							{#<td style="background-color: #{% color_de aula numero_dia hora %}">#}
+								{% dibujar_celda_horario_de aula numero_dia hora %}
+							{#</td>#}
+						{% endfor %}
+					</tr>
+					{% endfor %}
+					{% if not excel %}
+					<tr><td colspan='7'>
+						<a href="./excel/">Descargar en hoja Excel</a>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<b>Saltar a</b>
+						<select id="satlo_de_aula">
+							{% for a in aulas %}
+								<option value="{{ a.id }}"
+								{% ifequal a.id aula.id %}
+									selected="selected"
+								{% endifequal %}
+								>{{ a.nombre_corto }}</option>
+							{% endfor %}
+						</select>
+					</td></tr>
+					<tr>
+						<td colspan='7'>
+						Referencia:
+						{% for f in facultades %}
+							<span style="padding: 2px; background: #{{ f.color }}; 
+								border: 1px solid #222; margin: 2px;">
+								{{ f.nombre }}
+							</span>
+						{% endfor %}
+						</td>
+					</tr>
+					{% else %}
+					<tr>
+						<td colspan='7'>
+						Horarios acutalizado al {{ hoy|date:"d \de F Y" }}
+						</td>
+					</tr>
+					
+					{% endif %}
+				</tbody>
+			</table>

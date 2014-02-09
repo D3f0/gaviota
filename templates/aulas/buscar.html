@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %} Búsqueda {% endblock %}
+
+{% block extra_headers %}
+	{{ super }}
+	<!-- YUI_include tabview -->
+	<style type="text/css">
+		.pretty_form  label.outer {
+			width: 8em;
+			display: block;
+			float: left;
+			font-weight: bolder;
+		}
+		.pretty_form input[type=text] {
+			border: 1px solid #ccc;
+			padding: 2px;
+		}
+		.pretty_form ul {
+			float: left;
+			left: 9em;
+		}
+		.form_label_td {
+			font-weight: bolder;
+			width: 9em;
+		}
+		/* Nuevo CSS */
+		.search_table {
+			border: 0px;
+			maring: 4px;
+			border: 1px solid #777;
+		}
+		.search_table td, .search_table th {
+			border: 0px;
+		}
+		.search_table .buttons_row {
+			background: #AAC3D0;
+		} 
+		
+		.search_table .help_text {
+			display: block;
+			
+		}
+		
+		.search_table ul li {
+			min-width: 80px;
+			float: left;
+			list-style: none;
+		}
+		.searc_table ul {
+			margin: none;
+			padding: none;
+		}
+		.searc_table .error_list * {
+			background: red;
+		}
+		.search_table .row2 {
+			background-color: #fff;
+			 
+		}
+		.search_table p.error {
+			background: red;
+			padding: 2px;
+			color: white;
+			font-weight: bolder;
+		}
+		.search_table A.horario, .search_table A.borrar {
+			text-decoration: none;
+			padding-left: 20px;
+			background-repeat: no-repeat;
+			margin-left: 4px;
+		}
+		.search_table A.horario {
+			background-image: url('{{ MEDIA_URL }}img/icons/clock_go.png');
+		}
+		.search_table A.borrar {
+			background-image: url('{{ MEDIA_URL }}img/icons/cancel.png');
+		}
+		.search_table input[type=text] {
+			border: 1px solid #ccc;
+			border-right-color: #222;
+			border-bottom-color: #222;
+			padding: 2px;		
+		}
+		
+		.detalles, .horario {
+			width: 80%;
+		}
+		
+		.search_table li input[type=checkbox] {
+			maring-left: 10px;
+		}
+		
+	</style>
+	{#% load head_tags %#}
+	{#% css_inclusion "{{MEDIA_URL}}js/prototype.js" %#}
+	
+	<script type="text/javascript" src="{{ MEDIA_URL }}js/prototype.js"></script>
+	
+	
+{% endblock %}
+
+{% load aulas %}
+{% block content %}
+	<h3>Búsqueda de aulas</h3>
+	
+	<p>Mediante el siguiente formulario puede realizar consultas
+	sobre cursos y/o eventos: </p>
+	
+	<div id="buscador" class="yui-navset">
+		<ul class="yui-nav"> 
+	        <li class="selected"><a href="#tab1"><em>Búsqueda simple</em></a></li> 
+	         
+			<li><a href="#tab2"><em>Búsqueda por nombre</em></a></li> 
+			<li><a href="#tab3"><em>Búsqueda por fecha y hora</em></a></li>
+	    </ul>
+		 <div class="yui-content"> 
+			<div id="tab1">
+			<form action="" method="POST">
+				<table width="100%" border="0px;" class="search_table">
+				{% for field in form %}
+				
+					<tr class="{% cycle 'row1' 'row2' %}">
+						
+						<td class="form_label_td" rowspan="3">
+							{{ field.label_tag }}
+						</td>
+						
+						<td> 
+							{{ field }} 
+						</td>
+					</tr>
+					<tr class="{% cycle 'row1' 'row2' %}">
+						<td>
+							{{ field.help_text }}
+						</td>
+					</tr>
+					
+					<tr class="{% cycle 'row1' 'row2' %}">
+						<td>
+							{% for error in field.errors %}
+								<p class="error">{{error}}</p>
+							{% endfor %}
+							
+						</td>
+					</tr>
+				{% endfor %}
+				<tr class="buttons_row">
+					<td colspan="2">
+						<input type="submit" value="Buscar" id="btn_buscar">
+						<input type="reset"  value="Limpiar" id="btn_limpiar">
+					</td>
+				</tr>
+				</table>
+			</form>
+		</div>
+		<div id="tab2">Alfa</div>
+		<div id="tab3">Beta</div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		YAHOO.util.Event.onDOMReady(function(){
+
+			var btn = new YAHOO.widget.Button("btn_buscar");
+			var btn = new YAHOO.widget.Button("btn_limpiar");
+			
+			var buscador_tabs = new YAHOO.widget.TabView("buscador"); 
+			
+			var tabla = $$('.search_table').first();
+			// Borrar
+			$(tabla).select('.borrable').each(function (borrable) {
+				var elemento = document.createElement('a');
+				elemento.innerHTML="Limpiar";
+				elemento.className = 'borrar';
+				elemento.href="#";
+				borrable.parentNode.appendChild(elemento);
+				Event.observe(elemento, 'click', function (e) {
+					Event.stop(e);
+					borrable.value = '';
+					borrable.focus();
+				});
+			});
+			// Horario
+			$(tabla).select('.horario').each(function (horario){
+				var elemento = document.createElement('a');
+				elemento.innerHTML = 'Ahora';
+				elemento.href = '#';
+				elemento.className = 'horario';
+				
+				horario.parentNode.appendChild(elemento);
+				Event.observe(elemento, 'click', function (e){
+					Event.stop(e);
+					var d = new Date();
+					try {
+					horario.value = d.getHours() + ':' + d.getMinutes();
+					} catch (e) {
+						console.log(e);
+					}					
+				}); 
+			});		
+		});
+	</script>
+{% endblock %}
