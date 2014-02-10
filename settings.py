@@ -92,8 +92,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
 
     # Middlewares de Descom
-    'descom.middleware.yui.YUIIncludeMiddleware',
-    'descom.middleware.threadlocals.ThreadLocals',
+    #'descom.middleware.yui.YUIIncludeMiddleware',
+    #'descom.middleware.threadlocals.ThreadLocals',
 )
 
 ROOT_URLCONF = 'gaviota.urls'
@@ -143,10 +143,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # Gaviota
     'gaviota.apps.aulas.context_processors.edificios',
     # Descom
-    'descom.utils.context_processors.settings.MEDIA_URL',
-    'descom.utils.context_processors.settings.TEMPLATE_DEBUG',
-    'descom.utils.context_processors.settings.DIAS_SEMANA',
-    'descom.utils.context_processors.settings.HORAS',
+    'gaviota.context_processors.settings.MEDIA_URL',
+    'gaviota.context_processors.settings.TEMPLATE_DEBUG',
+    'gaviota.context_processors.settings.DIAS_SEMANA',
+    'gaviota.context_processors.settings.HORAS',
 )
 
 #===============================================================================
